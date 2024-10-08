@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Hexadecimal com Seed e Tamanho Variável</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #333;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 250px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #result {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #007bff;
+            word-break: break-all;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        select {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Gerador de Hexadecimal com Seed e Tamanho Variável</h1>
+        <input type="text" id="seed" placeholder="Digite a seed aqui..." />
+        
+        <select id="bitLength">
+            <option value="16">16 bits</option>
+            <option value="32">32 bits</option>
+            <option value="64">64 bits</option>
+            <option value="128" selected>128 bits</option>
+            <option value="256">256 bits</option>
+        </select>
+
+        <p id="result"></p>
+        <div class="buttons">
+            <button onclick="generateHex()">Gerar Valor</button>
+            <button onclick="copyToClipboard()">Copiar</button>
+        </div>
+    </div>
+
+    <script>
+        function generateHex() {
+            const seed = document.getElementById('seed').value;
+            const selectedBits = document.getElementById('bitLength').value;
+
+            if (!seed) {
+                alert('Por favor, insira uma seed.');
+                return;
+            }
+
+            let hexValue = '';
+            let hash = 0;
+            let byteLength = selectedBits / 8; // Converte bits para bytes
+
+            // Função simples para gerar um hash da seed
+            for (let i = 0; i < seed.length; i++) {
+                hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+                hash |= 0; // Converte para um valor de 32 bits
+            }
+
+            // Gera a quantidade de bytes correspondente aos bits escolhidos
+            for (let i = 0; i < byteLength; i++) {
+                const randomByte = (hash + Math.floor(Math.random() * 256)) & 0xff; // Gera um byte baseado na seed e random
+                hexValue += ('0' + randomByte.toString(16)).slice(-2); // Converte para hex e garante 2 dígitos
+            }
+
+            document.getElementById('result').textContent = hexValue;
+        }
+
+        function copyToClipboard() {
+            const resultText = document.getElementById('result').textContent;
+            if (resultText) {
+                // Cria um elemento temporário para selecionar e copiar o texto
+                const tempInput = document.createElement('textarea');
+                tempInput.value = resultText;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                alert('Valor copiado para a área de transferência!');
+            } else {
+                alert('Nenhum valor gerado para copiar!');
+            }
+        }
+    </script>
+
+</body>
+</html>
