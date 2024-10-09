@@ -70,7 +70,7 @@
 <body>
 
     <div class="container">
-        <h1>Simples Gerador de Código Hex</h1>
+        <h1>Gerador de C&oacute;digo Hexadecimal</h1>
         <input type="text" id="seed" placeholder="Digite a seed aqui..." />
         
         <select id="bitLength">
@@ -83,16 +83,15 @@
 
         <p id="result"></p>
         <div class="buttons">
-            <button onclick="generateHex()">Gerar Valor</button>
+            <button onclick="generateHexAndQRCode()">Gerar Valor</button>
             <button onclick="copyToClipboard()">Copiar</button>
-            <button onclick="generateQRCode()">Gerar QR Code</button>
         </div>
 
         <canvas id="qrcode"></canvas>
     </div>
 
     <script>
-        function generateHex() {
+        function generateHexAndQRCode() {
             const seed = document.getElementById('seed').value;
             const selectedBits = document.getElementById('bitLength').value;
 
@@ -118,6 +117,9 @@
             }
 
             document.getElementById('result').textContent = hexValue;
+
+            // Gerar QR Code automaticamente após gerar o valor hexadecimal
+            generateQRCode(hexValue);
         }
 
         function copyToClipboard() {
@@ -136,13 +138,12 @@
             }
         }
 
-        function generateQRCode() {
-            const resultText = document.getElementById('result').textContent;
-            if (resultText) {
-                // Criar o QR Code com a string gerada como texto
+        function generateQRCode(hexValue) {
+            if (hexValue) {
+                // Criar o QR Code com o valor gerado
                 const qr = new QRious({
                     element: document.getElementById('qrcode'),
-                    value: resultText.toString(), // Garante que o valor seja interpretado como texto
+                    value: hexValue.toString(), // Garante que o valor seja interpretado como texto
                     size: 200, // Aumentando o tamanho do QR Code para melhor legibilidade
                     level: 'H', // Definindo o nível de correção de erro para o mais alto ('H')
                     background: '#ffffff', // Cor de fundo
@@ -155,4 +156,5 @@
     </script>
 
 </body>
+<!-- Código criado e publicado em: codegen.samuellopes.com.br por Samuel Lopes - 2024 - samuellopes.com.br -->
 </html>
