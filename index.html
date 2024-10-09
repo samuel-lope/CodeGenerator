@@ -70,7 +70,7 @@
 <body>
 
     <div class="container">
-        <h1>Gerador de Hexadecimal com Seed, QR Code e Tamanho Variável</h1>
+        <h1>Simples Gerador de Código Hex</h1>
         <input type="text" id="seed" placeholder="Digite a seed aqui..." />
         
         <select id="bitLength">
@@ -78,7 +78,7 @@
             <option value="32">32 bits</option>
             <option value="64">64 bits</option>
             <option value="128" selected>128 bits</option>
-            <option value="256">256 bits</option>
+            <!-- <option value="256">256 bits</option> -->
         </select>
 
         <p id="result"></p>
@@ -139,10 +139,10 @@
         function generateQRCode() {
             const resultText = document.getElementById('result').textContent;
             if (resultText) {
-                // Criar o QR Code com parâmetros otimizados
+                // Criar o QR Code com a string gerada como texto
                 const qr = new QRious({
                     element: document.getElementById('qrcode'),
-                    value: resultText,
+                    value: resultText.toString(), // Garante que o valor seja interpretado como texto
                     size: 200, // Aumentando o tamanho do QR Code para melhor legibilidade
                     level: 'H', // Definindo o nível de correção de erro para o mais alto ('H')
                     background: '#ffffff', // Cor de fundo
