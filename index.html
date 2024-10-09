@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Hexadecimal com Seed e Tamanho Variável</title>
+    <title>Gerador de Hexadecimal com Seed, QR Code e Tamanho Variável</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -61,12 +61,16 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+        #qrcode {
+            margin-top: 20px;
+        }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 </head>
 <body>
 
     <div class="container">
-        <h1>Gerador de Hexadecimal com Seed e Tamanho Variável</h1>
+        <h1>Gerador de Hexadecimal com Seed, QR Code e Tamanho Variável</h1>
         <input type="text" id="seed" placeholder="Digite a seed aqui..." />
         
         <select id="bitLength">
@@ -81,7 +85,10 @@
         <div class="buttons">
             <button onclick="generateHex()">Gerar Valor</button>
             <button onclick="copyToClipboard()">Copiar</button>
+            <button onclick="generateQRCode()">Gerar QR Code</button>
         </div>
+
+        <canvas id="qrcode"></canvas>
     </div>
 
     <script>
@@ -126,6 +133,23 @@
                 alert('Valor copiado para a área de transferência!');
             } else {
                 alert('Nenhum valor gerado para copiar!');
+            }
+        }
+
+        function generateQRCode() {
+            const resultText = document.getElementById('result').textContent;
+            if (resultText) {
+                // Criar o QR Code com parâmetros otimizados
+                const qr = new QRious({
+                    element: document.getElementById('qrcode'),
+                    value: resultText,
+                    size: 200, // Aumentando o tamanho do QR Code para melhor legibilidade
+                    level: 'H', // Definindo o nível de correção de erro para o mais alto ('H')
+                    background: '#ffffff', // Cor de fundo
+                    foreground: '#000000', // Cor do código
+                });
+            } else {
+                alert('Nenhum valor gerado para converter em QR Code!');
             }
         }
     </script>
